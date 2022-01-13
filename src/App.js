@@ -247,13 +247,13 @@ export default function App() {
 
     if (accentBg.s > colorToUse.s) { // Accent Background has more saturation! Let's use that.
       colorToUse = accentBg;
-      hoverOpacity = hoverOpacity * (2 - accentBg.pLight);
     }
 
     if (accentFg.s > colorToUse.s) { // Accent Foreground has even more saturation! Let's use that.
       colorToUse = accentFg;
-      hoverOpacity = hoverOpacity * (2 - accentFg.pLight);
     }
+
+    hoverOpacity = hoverOpacity * (2 - colorToUse.pLight); // Tweak the opacity with MAGIC!
 
     hoverOpacity = Math.round(hoverOpacity*100)/100; // Round things off to a nice 2 decimals
     
@@ -284,7 +284,7 @@ export default function App() {
     <Row>
       <Col>
         <Col>
-          <h1>Color Thing</h1>
+          <h1>Magic Hover Color Thing</h1>
           <Row>
             <ColorThing color={accentBg} setColor={setAccentBg} label="Accent Background" test/>
             <ColorThing color={accentFg} setColor={setAccentFg} label="Accent Foreground" />
