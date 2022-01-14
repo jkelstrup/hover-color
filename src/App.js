@@ -238,6 +238,48 @@ export default function App() {
     setAccentBg(tmpMainFg)
   }
 
+  function pureMagic(fg,bg) {
+    const BLACK_ON_WHITE_OPACITY = 0.05;
+    const WHITE_ON_BLACK_OPACITY = 0.15;
+
+    // Alright. The goal here is to determine a nice opacity for the foreground color (fg) on a background color (bg).
+    // First of all, we've decided on the extremes: Pure black on pure white should result in BLACK_ON_WHITE_OPACITY
+    // and pure white on pure black should result in WHITE_ON_BLACK_OPACITY. So far so good.
+
+    // The problem is that, believe it or not, there are more colors in between pure black and pure white.
+    // The closer they are together the higher the opacity should be, for it to have a proper effect.
+    // We use perceived lightness (pLight) to determine how "close" the two colors are.
+    // What we want is to approach an opacity of 1 (not at all transparent) if the 2 colors have the same perceived lightness.
+
+    // With that, let's start by determining where we are between those extremes.
+    // This returns a number between 0 and 1 where
+    // 0.0 = Black on White extreme
+    // 1.0 = White on Black extreme
+    // 0.5 = Equal perceived lightness
+    let scalePosition = ( 1 - (bg-fg) ) / 2;
+
+    // We can now translate the scalePosition to it's opacity:
+    let baseOpacity = scalePosition * (WHITE_ON_BLACK_OPACITY - BLACK_ON_WHITE_OPACITY) + BLACK_ON_WHITE_OPACITY;
+
+    // But as mentioned above, we want to account for equalness.
+    // So let's determine the equalness.
+    // This returns a number between 0 and 1 where
+    // 0.0 = One of the two extremes, black on white or vice versa.
+    // 1.0 = Equal perceived lightness.
+    // 0.n = Somewhere in between.
+    let equalness = 1 - Math.abs(bg-fg);
+  
+    // We can now figure out how much we need to correct the baseOpacity towards 1.
+    // Let's multiply the distance from our baseOpacity to 1 with our equalness.
+    let correctionForEqualness = (1 - baseOpacity) * equalness;
+
+    // ... and finally add the correction to the baseOpacity.
+    let magicOpacity = baseOpacity + correctionForEqualness
+
+    // We're done! Let's round things off.
+    return Math.round(magicOpacity*1000)/1000;
+  }
+
   // EFFECT COLORS FOR __MAIN__
   useEffect(() => {    
     let hoverOpacity = blackOpa - (blackOpa-whiteOpa) * mainBg.pLight; // Setting the base opacity based on the background
@@ -277,6 +319,12 @@ export default function App() {
     setAccentAc(colortools.redefine(accentFg,{a: activeOpacity}));
 
   },[accentBg.pLight, accentFg, blackOpa, whiteOpa])
+
+
+
+  useEffect(() => {
+    console.log("pureMagic:",pureMagic(accentFg.pLight,accentBg.pLight));
+  })
 
 
 
