@@ -204,22 +204,22 @@ const ColorEditor = ({color,setColor,test,label}) => {
 export default function App() {
   const [ mainBg, setMainBg ] = useState(createColor("#FFFFFF"));
   const [ mainFg, setMainFg ] = useState(createColor("#1A1A1A"));
-  const [ accentBg, setAccentBg ] = useState(createColor("#3D3DFF"));
-  const [ accentFg, setAccentFg ] = useState(createColor("#FFFFFF"));
+  const [ brandBg, setBrandBg ] = useState(createColor("#3D3DFF"));
+  const [ brandFg, setBrandFg ] = useState(createColor("#FFFFFF"));
 
-  const [ mainHo, setMainHo ] = useState(createColor());
-  const [ mainAc, setMainAc ] = useState(createColor());
-  const [ accentHo, setAccentHo ] = useState(createColor());
-  const [ accentAc, setAccentAc ] = useState(createColor());
+  const [ mainHover, setMainHo ] = useState(createColor());
+  const [ mainActive, setMainAc ] = useState(createColor());
+  const [ brandHover, setBrandHo ] = useState(createColor());
+  const [ brandActive, setBrandAc ] = useState(createColor());
 
   const [ blackOnWhiteOpacity, setBlackOnWhiteOpacity ] = useState(.05);
   const [ whiteOnBlackOpacity, setWhiteOnBlackOpacity ] = useState(.18);
   const [ equalityThreshold, setEqualityThreshold ] = useState(.1);
 
-  function flipAccent() {
-    let tmpAccentBg = accentBg;
-    setAccentBg(accentFg);
-    setAccentFg(tmpAccentBg);
+  function flipBrand() {
+    let tmpBrandBg = brandBg;
+    setBrandBg(brandFg);
+    setBrandFg(tmpBrandBg);
   }
 
   function flipMain() {
@@ -232,29 +232,29 @@ export default function App() {
     let tmpMainBg = mainBg;
     setMainBg(mainFg);
     setMainFg(tmpMainBg);
-    let tmpAccentBg = accentBg;
-    setAccentBg(accentFg);
-    setAccentFg(tmpAccentBg);
+    let tmpBrandBg = brandBg;
+    setBrandBg(brandFg);
+    setBrandFg(tmpBrandBg);
   }
 
-  function flipAccentMain() {
+  function flipBrandMain() {
     let tmpMainBg = mainBg;
-    setMainBg(accentBg);
-    setAccentBg(tmpMainBg);
+    setMainBg(brandBg);
+    setBrandBg(tmpMainBg);
 
     let tmpMainFg = mainFg;
-    setMainFg(accentFg);
-    setAccentFg(tmpMainFg);
+    setMainFg(brandFg);
+    setBrandFg(tmpMainFg);
   }
 
   function flipAllTheThings() {
     let tmpMainBg = mainBg;
-    setMainBg(accentFg);
-    setAccentFg(tmpMainBg);
+    setMainBg(brandFg);
+    setBrandFg(tmpMainBg);
 
     let tmpMainFg = mainFg;
-    setMainFg(accentBg);
-    setAccentBg(tmpMainFg)
+    setMainFg(brandBg);
+    setBrandBg(tmpMainFg)
   }
 
   function pureMagic(fgPLight,bgPLight,bonwOpacity,wonbOpacity) {
@@ -303,21 +303,21 @@ export default function App() {
 
   // EFFECT COLORS FOR __MAIN__
   useEffect(() => {    
-    if (mainBg.hex === accentBg.hex) { // If the background color is the same, we'll use the same effect colors. Done.
-      setMainHo(accentHo);
-      setMainAc(accentAc);
+    if (mainBg.hex === brandBg.hex) { // If the background color is the same, we'll use the same effect colors. Done.
+      setMainHo(brandHover);
+      setMainAc(brandActive);
     } else {
       let colorToUse = mainFg;
 
-      if (accentBg.s > colorToUse.s) { // Accent Background has more saturation! Let's consider this!
-        if (Math.abs(accentBg.pLight - mainBg.pLight) > equalityThreshold) { // AND there's a fair difference. Great!
-          colorToUse = accentBg;
+      if (brandBg.s > colorToUse.s) { // Brand Background has more saturation! Let's consider this!
+        if (Math.abs(brandBg.pLight - mainBg.pLight) > equalityThreshold) { // AND there's a fair difference. Great!
+          colorToUse = brandBg;
         }
       }
 
-      if (accentFg.s > colorToUse.s) { // Accent Foreground has even more saturation! Let's consider this!
-        if (Math.abs(accentFg.pLight - mainBg.pLight) > equalityThreshold) { // AND there's a fair difference. Great!
-          colorToUse = accentFg;
+      if (brandFg.s > colorToUse.s) { // Brand Foreground has even more saturation! Let's consider this!
+        if (Math.abs(brandFg.pLight - mainBg.pLight) > equalityThreshold) { // AND there's a fair difference. Great!
+          colorToUse = brandFg;
         }
       }
 
@@ -329,18 +329,18 @@ export default function App() {
 
     }
 
-  },[accentAc, accentBg, accentFg, accentHo, blackOnWhiteOpacity, mainBg, mainFg, whiteOnBlackOpacity, equalityThreshold])
+  },[brandActive, brandBg, brandFg, brandHover, blackOnWhiteOpacity, mainBg, mainFg, whiteOnBlackOpacity, equalityThreshold])
 
   // EFFECT COLORS FOR __ACCENT__
   useEffect(() => {
-    let colorToUse = accentFg;
-    let hoverOpacity = pureMagic(colorToUse.pLight,accentBg.pLight,blackOnWhiteOpacity,whiteOnBlackOpacity);
+    let colorToUse = brandFg;
+    let hoverOpacity = pureMagic(colorToUse.pLight,brandBg.pLight,blackOnWhiteOpacity,whiteOnBlackOpacity);
     let activeOpacity = Math.round(Math.min(1,hoverOpacity*1.5)*1000)/1000
 
-    setAccentHo(colortools.redefine(colorToUse,{a: hoverOpacity}));
-    setAccentAc(colortools.redefine(colorToUse,{a: activeOpacity}));
+    setBrandHo(colortools.redefine(colorToUse,{a: hoverOpacity}));
+    setBrandAc(colortools.redefine(colorToUse,{a: activeOpacity}));
 
-  },[accentBg, accentFg, blackOnWhiteOpacity, whiteOnBlackOpacity])
+  },[brandBg, brandFg, blackOnWhiteOpacity, whiteOnBlackOpacity])
 
   return (
     <Row>
@@ -348,8 +348,8 @@ export default function App() {
         <Col>
           <h1>Magic Hover Color Thing</h1>
           <Row>
-            <ColorEditor color={accentBg} setColor={setAccentBg} label="Accent Background" test/>
-            <ColorEditor color={accentFg} setColor={setAccentFg} label="Accent Foreground" />
+            <ColorEditor color={brandBg} setColor={setBrandBg} label="Brand Background" test/>
+            <ColorEditor color={brandFg} setColor={setBrandFg} label="Brand Foreground" />
           </Row>
           <Row>
             <ColorEditor color={mainBg} setColor={setMainBg} label="Main Background" test />
@@ -364,34 +364,34 @@ export default function App() {
             <input type="range" min="0" max="50" value={whiteOnBlackOpacity*100} onChange={(e) => setWhiteOnBlackOpacity(e.target.value/100)}/><br/>
             <code>Equality threshold: {equalityThreshold}</code><br/>
             <input type="range" min="0" max="100" value={equalityThreshold*100} onChange={(e) => setEqualityThreshold(e.target.value/100)}/><br/>
-            Accent hover: {accentHo.hsla}<br/>
-            Accent active: {accentAc.hsla}<br/>
+            Brand hover: {brandHover.hsla}<br/>
+            Brand active: {brandActive.hsla}<br/>
             <br/>
-            Main hover: {mainHo.hsla}<br/>
-            Main active: {mainAc.hsla}
+            Main hover: {mainHover.hsla}<br/>
+            Main active: {mainActive.hsla}
           </div>
           <Demo style={{background: mainBg.hex, color: mainFg.hex}}>
-            <DemoHeader style={{background: accentBg.hex, color: accentFg.hex}}>
+            <DemoHeader style={{background: brandBg.hex, color: brandFg.hex}}>
               <DemoTitle>Header</DemoTitle>
-              <DemoButton hoverBg={accentHo} activeBg={accentAc}>No</DemoButton>
-              <DemoButton hoverBg={accentHo} activeBg={accentAc}>No</DemoButton>
-              <DemoButton hoverBg={accentHo} activeBg={accentAc} hover>Ho</DemoButton>
-              <DemoButton hoverBg={accentHo} activeBg={accentAc}>No</DemoButton>
-              <DemoButton hoverBg={accentHo} activeBg={accentAc} active>Ac</DemoButton>
+              <DemoButton hoverBg={brandHover} activeBg={brandActive}>No</DemoButton>
+              <DemoButton hoverBg={brandHover} activeBg={brandActive}>No</DemoButton>
+              <DemoButton hoverBg={brandHover} activeBg={brandActive} hover>Ho</DemoButton>
+              <DemoButton hoverBg={brandHover} activeBg={brandActive}>No</DemoButton>
+              <DemoButton hoverBg={brandHover} activeBg={brandActive} active>Ac</DemoButton>
             </DemoHeader>
             <DemoMain>
-              <DemoButton hoverBg={mainHo} activeBg={mainAc}>Normal ipsum</DemoButton>
-              <DemoButton hoverBg={mainHo} activeBg={mainAc}>Normal ipsum</DemoButton>
-              <DemoButton hoverBg={mainHo} activeBg={mainAc} hover>Hover ipsum</DemoButton>
-              <DemoButton hoverBg={mainHo} activeBg={mainAc}>Lorem ipsum</DemoButton>
-              <DemoButton hoverBg={mainHo} activeBg={mainAc} active>Active ipsum</DemoButton>
+              <DemoButton hoverBg={mainHover} activeBg={mainActive}>Normal ipsum</DemoButton>
+              <DemoButton hoverBg={mainHover} activeBg={mainActive}>Normal ipsum</DemoButton>
+              <DemoButton hoverBg={mainHover} activeBg={mainActive} hover>Hover ipsum</DemoButton>
+              <DemoButton hoverBg={mainHover} activeBg={mainActive}>Lorem ipsum</DemoButton>
+              <DemoButton hoverBg={mainHover} activeBg={mainActive} active>Active ipsum</DemoButton>
             </DemoMain>
           </Demo>
           <div style={{flex: "1", display: "flex", flexDirection: "column", alignItems: 'center', justifyContent: "center"}}>
-            <button onClick={() => flipAccent()}>Flip Accent colors!</button><br/>
+            <button onClick={() => flipBrand()}>Flip Brand colors!</button><br/>
             <button onClick={() => flipMain()}>Flip Main colors!</button><br/>
             <button onClick={() => flipBackgroundForeground()}>Flip background and foreground!</button><br/>
-            <button onClick={() => flipAccentMain()}>Flip Accent and Main colors!</button><br/>
+            <button onClick={() => flipBrandMain()}>Flip Brand and Main colors!</button><br/>
             <button onClick={() => {flipAllTheThings()}}>FLIP ALL THE THINGS!</button><br/>
           </div>
         </Row>
