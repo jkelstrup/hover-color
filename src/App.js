@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import colortools, { createColor } from './colortools';
+import colortools, { createColor, redefine } from './colortools';
 import styled from 'styled-components/macro';
 
 const Row = styled.div`
@@ -257,6 +257,28 @@ export default function App() {
     setBrandBg(tmpMainFg)
   }
 
+  function randomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+  }
+
+  function randomColors() {
+    // Please ignore the implementation of this unimportant but fun – and functioning – function.
+    let tmpMainFg = createColor();
+    tmpMainFg = redefine(tmpMainFg,{s: Math.round(tmpMainFg.s/5)});
+    setMainFg(tmpMainFg);
+    
+    let tmpMainBg = createColor();
+    tmpMainBg = redefine(tmpMainBg,{s: Math.round(tmpMainBg.s/20)});
+    setMainBg(redefine(tmpMainBg,{l: (tmpMainFg.l+randomInt(40,60))%100}));
+    
+    let tmpBrandFg = createColor();
+    setBrandFg(tmpBrandFg);
+    let tmpBrandBg = createColor();
+    setBrandBg(redefine(tmpBrandBg,{l: (tmpBrandFg.l+randomInt(40,60))%100}));
+  }
+
   function pureMagic(fgPLight,bgPLight,bonwOpacity,wonbOpacity) {
     const BLACK_ON_WHITE_OPACITY = bonwOpacity;
     const WHITE_ON_BLACK_OPACITY = wonbOpacity;
@@ -393,6 +415,7 @@ export default function App() {
             <button onClick={() => flipBackgroundForeground()}>Flip background and foreground!</button><br/>
             <button onClick={() => flipBrandMain()}>Flip Brand and Main colors!</button><br/>
             <button onClick={() => {flipAllTheThings()}}>FLIP ALL THE THINGS!</button><br/>
+            <button onClick={() => {randomColors()}}>RANDOMIZE ALL THE THINGS!</button><br/>
           </div>
         </Row>
       </Col>
