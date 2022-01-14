@@ -363,7 +363,7 @@ export default function App() {
             <code>Base opacity for WHITE on BLACK: {whiteOnBlackOpacity}</code><br/>
             <input type="range" min="0" max="50" value={whiteOnBlackOpacity*100} onChange={(e) => setWhiteOnBlackOpacity(e.target.value/100)}/><br/>
             <code>Equality threshold: {equalityThreshold}</code><br/>
-            <input type="range" min="0" max="100" value={equalityThreshold*100} onChange={(e) => setEqualityThreshold(e.target.value/100)}/><br/>
+            <input type="range" min="0" max="50" value={equalityThreshold*100} onChange={(e) => setEqualityThreshold(e.target.value/100)}/><br/>
             Brand hover: {brandHover.hsla}<br/>
             Brand active: {brandActive.hsla}<br/>
             <br/>
