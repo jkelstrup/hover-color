@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/hover-color/static/js/main.eda44c05.js",
+    "main.js": "/hover-color/static/js/main.3e460c1a.js",
     "index.html": "/hover-color/index.html",
-    "main.eda44c05.js.map": "/hover-color/static/js/main.eda44c05.js.map"
+    "main.3e460c1a.js.map": "/hover-color/static/js/main.3e460c1a.js.map"
   },
   "entrypoints": [
-    "static/js/main.eda44c05.js"
+    "static/js/main.3e460c1a.js"
   ]
 }
