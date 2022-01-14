@@ -214,6 +214,7 @@ export default function App() {
 
   const [ blackOnWhiteOpacity, setBlackOnWhiteOpacity ] = useState(.05);
   const [ whiteOnBlackOpacity, setWhiteOnBlackOpacity ] = useState(.18);
+  const [ equalityThreshold, setEqualityThreshold ] = useState(.1);
 
   function flipAccent() {
     let tmpAccentBg = accentBg;
@@ -309,13 +310,13 @@ export default function App() {
       let colorToUse = mainFg;
 
       if (accentBg.s > colorToUse.s) { // Accent Background has more saturation! Let's consider this!
-        if (Math.abs(accentBg.pLight - mainBg.pLight) > 0.1) { // AND there's a fair difference. Great!
+        if (Math.abs(accentBg.pLight - mainBg.pLight) > equalityThreshold) { // AND there's a fair difference. Great!
           colorToUse = accentBg;
         }
       }
 
       if (accentFg.s > colorToUse.s) { // Accent Foreground has even more saturation! Let's consider this!
-        if (Math.abs(accentFg.pLight - mainBg.pLight) > 0.1) { // AND there's a fair difference. Great!
+        if (Math.abs(accentFg.pLight - mainBg.pLight) > equalityThreshold) { // AND there's a fair difference. Great!
           colorToUse = accentFg;
         }
       }
@@ -328,7 +329,7 @@ export default function App() {
 
     }
 
-  },[accentAc, accentBg, accentFg, accentHo, blackOnWhiteOpacity, mainBg, mainFg, whiteOnBlackOpacity])
+  },[accentAc, accentBg, accentFg, accentHo, blackOnWhiteOpacity, mainBg, mainFg, whiteOnBlackOpacity, equalityThreshold])
 
   // EFFECT COLORS FOR __ACCENT__
   useEffect(() => {
@@ -361,6 +362,8 @@ export default function App() {
             <input type="range" min="0" max="50" value={blackOnWhiteOpacity*100} onChange={(e) => setBlackOnWhiteOpacity(e.target.value/100)}/><br/>
             <code>Base opacity for WHITE on BLACK: {whiteOnBlackOpacity}</code><br/>
             <input type="range" min="0" max="50" value={whiteOnBlackOpacity*100} onChange={(e) => setWhiteOnBlackOpacity(e.target.value/100)}/><br/>
+            <code>Equality threshold: {equalityThreshold}</code><br/>
+            <input type="range" min="0" max="100" value={equalityThreshold*100} onChange={(e) => setEqualityThreshold(e.target.value/100)}/><br/>
             Accent hover: {accentHo.hsla}<br/>
             Accent active: {accentAc.hsla}<br/>
             <br/>
