@@ -1,5 +1,5 @@
 export default function isValidHex(hex) {
-  if (typeof hex === 'string') {
+  if (hex.length === 7 && typeof hex === 'string') {
     return (
       hex.substring(0,1) === "#" &&
       parseInt(hex.substring(1,3),16) >= 0 &&
